@@ -1,0 +1,22 @@
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050; margin-top: 70px;">
+    {% for msg in messages %}
+    <div class="toast show align-items-center text-white bg-{{ msg.tags }} border-0 mb-2" 
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fs-6 fw-medium">
+                <i class="fas 
+                    {% if msg.tags == 'success' %}fa-check-circle{% endif %}
+                    {% if msg.tags == 'info' %}fa-info-circle{% endif %}
+                    {% if msg.tags == 'warning' %}fa-exclamation-triangle{% endif %}
+                    {% if msg.tags == 'error' or msg.tags == 'danger' %}fa-times-circle{% endif %}
+                    me-2"></i>
+                {{ msg }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

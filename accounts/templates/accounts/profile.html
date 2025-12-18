@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>پروفایل شما</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-card text-center">
+    <!-- عکس پروفایل -->
+    {% if object.avatar %}
+        <img src="{{ object.avatar.url }}" class="avatar mb-3">
+    {% else %}
+        <img src="{% static 'default-avatar.png' %}" class="avatar mb-3">
+    {% endif %}
+
+    <!-- اطلاعات کاربر -->
+    <h3>{{ object.user.full_name }}</h3>
+    <p class="text-muted">{{ object.user.email }}</p>
+    <p class="text-muted">{{ object.user.phone_number }}</p>
+
+    {% if object.address %}
+        <p>آدرس: {{ object.address }}</p>
+    {% endif %}
+
+    <!-- دکمه ویرایش -->
+    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary mt-3">ویرایش پروفایل</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

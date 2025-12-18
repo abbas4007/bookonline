@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container my-5">
+
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-black-50 text-center">
+            <h4 class="mb-0 text-black-50"  >🛒 سبد خرید شما</h4>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>نام محصول</th>
+                            <th>تعداد</th>
+                            <th>قیمت واحد</th>
+                            <th>قیمت کل</th>
+                            <th>حذف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="fw-bold">{{ item.product }}</td>
+                            <td>
+                                <span class="badge bg-secondary px-3 py-2 text-black-50">
+                                    {{ item.quantity }}
+                                </span>
+                            </td>
+                            <td>{{ item.price|intcomma }} تومان</td>
+                            <td class="text-success fw-bold">
+                                {{ item.total_price|intcomma }} تومان
+                            </td>
+                            <td>
+                                <a href="{% url 'orders:cart_remove' item.product.id %}"
+                                   class="btn btn-outline-danger btn-sm">
+                                    ✖
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="py-4 text-muted">
+                                سبد خرید شما خالی است
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <div class="fs-5">
+                <strong>جمع کل:</strong>
+                <span class="text-success fw-bold">
+                    {{ cart.get_total_price|intcomma }} تومان
+                </span>
+            </div>
+
+            <form action="{% url 'orders:order_create' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-lg px-5">
+                    ادامه به پرداخت
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

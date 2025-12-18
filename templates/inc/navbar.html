@@ -1,0 +1,321 @@
+<!-- templates/inc/navbar.html -->
+{% load static %}
+
+<!-- اضافه کردن Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+<nav class="navbar navbar-expand-lg navbar-dark" 
+     style="
+         --bg-image: url('https://thumbs.dreamstime.com/b/abstract-background-blue-purple-flowing-waves-black-digital-art-sound-music-visualization-futuristic-technology-concept-367506206.jpg');
+         background: linear-gradient(135deg, rgba(26,26,46,0.85) 0%, rgba(102,75,162,0.75) 100%), var(--bg-image), #1a1a2e;
+         background-size: cover;
+         background-position: center;
+         min-height: 156px;
+         backdrop-filter: blur(4px);
+         box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+         transition: all 0.4s ease;
+     ">
+    <div class="container h-100">
+        <!-- لوگو -->
+        <a class="navbar-brand fw-bold d-flex align-items-center h-100" href="{% url 'home:home' %}" style="font-size: 1.6rem;">
+            <div class="logo-wrapper position-relative me-3">
+                <div class="logo-bg rounded-circle p-2" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="bi bi-shop-window fs-3 text-white"></i>
+                </div>
+                <span class="position-absolute" style="top: -2px; right: -2px;">
+                    <i class="bi bi-circle-fill text-success" style="font-size: 0.6rem;"></i>
+                </span>
+            </div>
+            <div class="d-flex flex-column">
+                <span class="text-white">فروشگاه <span class="text-warning">آنلاین</span></span>
+                <small class="text-muted" style="font-size: 0.75rem; margin-top: -2px;">مرجع خرید اینترنتی</small>
+            </div>
+        </a>
+        
+        <!-- دکمه همبرگری -->
+        <button class="navbar-toggler border-1 border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                style="border-color: rgba(255,255,255,0.2) !important;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- منو -->
+        <div class="collapse navbar-collapse h-100" id="navbarNav">
+            <!-- لینک‌های اصلی -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 h-100 d-flex align-items-center" style="gap: 5px;">
+                <li class="nav-item h-100 d-flex align-items-center">
+                    <a class="nav-link d-flex align-items-center gap-2 px-4 h-100" 
+                       href="{% url 'home:home' %}"
+                       style="transition: all 0.3s ease; position: relative;">
+                        <i class="bi bi-house-door fs-5"></i>
+                        <span>صفحه اصلی</span>
+                        <div class="nav-indicator" style="position: absolute; bottom: 0; right: 0; left: 0; height: 3px; background: #0d6efd; transform: scaleX(0); transition: transform 0.3s;"></div>
+                    </a>
+                </li>
+                <li class="nav-item h-100 d-flex align-items-center">
+                    <a class="nav-link d-flex align-items-center gap-2 px-4 h-100" 
+                       href="{% url 'home:bucket' %}"
+                       style="transition: all 0.3s ease; position: relative;">
+                        <i class="bi bi-grid-1x2 fs-5"></i>
+                        <span>محصولات</span>
+                        <div class="nav-indicator" style="position: absolute; bottom: 0; right: 0; left: 0; height: 3px; background: #0d6efd; transform: scaleX(0); transition: transform 0.3s;"></div>
+                    </a>
+                </li>
+                <li class="nav-item h-100 d-flex align-items-center">
+                    <a class="nav-link d-flex align-items-center gap-2 px-4 h-100 position-relative" 
+                       href="{% url 'orders:cart' %}"
+                       style="transition: all 0.3s ease; position: relative;">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span>سبد خرید</span>
+                        {% if cart_count %}
+                        <span class="badge bg-danger position-absolute" 
+                              style="top: 12px; right: 8px; padding: 4px 8px; font-size: 0.75rem; border: 2px solid #1a1a2e; min-width: 24px;">
+                            {{ cart_count }}
+                        </span>
+                        {% endif %}
+                        <div class="nav-indicator" style="position: absolute; bottom: 0; right: 0; left: 0; height: 3px; background: #0d6efd; transform: scaleX(0); transition: transform 0.3s;"></div>
+                    </a>
+                </li>
+                
+                <!-- خط جداکننده -->
+                <li class="nav-item d-none d-lg-flex align-items-center h-100">
+                    <div class="vr mx-3" style="height: 30px; opacity: 0.2;"></div>
+                </li>
+            </ul>
+            
+            <!-- بخش کاربر -->
+            <ul class="navbar-nav h-100 d-flex align-items-center">
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown h-100 d-flex align-items-center">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3" 
+                           href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                           style="transition: all 0.3s ease; border-radius: 8px;"
+                           onmouseover="this.style.backgroundColor='rgba(255,255,255,0.08)'"
+                           onmouseout="this.style.backgroundColor='transparent'">
+                            <div class="user-avatar bg-gradient rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                {% if user.get_full_name %}
+                                    <span class="text-white fw-bold">{{ user.get_full_name|first|upper }}</span>
+                                {% else %}
+                                    <i class="bi bi-person-fill text-white"></i>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-column text-start me-2">
+                                <span class="fw-medium text-white" style="font-size: 0.95rem;">
+                                    {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}
+                                </span>
+                                <small class="text-muted" style="font-size: 0.8rem;">حساب کاربری</small>
+                            </div>
+                            <i class="bi bi-chevron-down text-light"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2" 
+                            style="background: #2d3748; border: 1px solid #4a5568; min-width: 220px;">
+                            <li><a class="dropdown-item text-white d-flex align-items-center gap-3 py-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person-circle fs-5"></i><div><div>پروفایل</div><small class="text-muted">مدیریت حساب کاربری</small></div></a></li>
+                            <li><hr class="dropdown-divider my-2" style="border-color: #4a5568;"></li>
+                            <li><a class="dropdown-item text-white d-flex align-items-center gap-3 py-2" href="{% url 'accounts:user_logout' %}"><i class="bi bi-box-arrow-left fs-5"></i><div><div>خروج</div><small class="text-muted">خروج از حساب کاربری</small></div></a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <div class="d-flex gap-3 h-100 align-items-center">
+                        <a class="nav-link d-flex align-items-center gap-2 px-4 h-100" 
+                           href="{% url 'accounts:user_login' %}"
+                           style="transition: all 0.3s ease; border-radius: 8px;"
+                           onmouseover="this.style.backgroundColor='rgba(255,255,255,0.08)'"
+                           onmouseout="this.style.backgroundColor='transparent'">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>ورود</span>
+                        </a>
+                        <a class="nav-link d-flex align-items-center gap-2 px-4 h-100 rounded-pill" 
+                           href="{% url 'accounts:register' %}"
+                           style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; font-weight: 500;"
+                           onmouseover="this.style.opacity='0.9'; this.style.transform='translateY(-2px)'"
+                           onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
+                            <i class="bi bi-person-plus"></i>
+                            <span>ثبت نام</span>
+                        </a>
+                    </div>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .nav-link { 
+        position: relative; 
+        cursor: pointer;
+    }
+    
+    .nav-link:hover .nav-indicator { 
+        transform: scaleX(1); 
+    }
+    
+    .nav-link.active .nav-indicator { 
+        transform: scaleX(1); 
+    }
+    
+    .nav-link.active {
+        background-color: rgba(255,255,255,0.08) !important;
+    }
+    
+    .dropdown-item { 
+        transition: all 0.2s ease; 
+        border-radius: 6px; 
+        margin: 2px 8px; 
+        width: calc(100% - 16px); 
+    }
+    
+    .dropdown-item:hover { 
+        background: #4a5568 !important; 
+        padding-right: 20px !important; 
+    }
+    
+    .user-avatar { 
+        transition: transform 0.3s ease; 
+    }
+    
+    .dropdown-toggle:hover .user-avatar { 
+        transform: scale(1.05); 
+    }
+    
+    .badge { 
+        animation: badgePulse 2s infinite; 
+    }
+    
+    @keyframes badgePulse { 
+        0% { 
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); 
+        } 
+        70% { 
+            box-shadow: 0 0 0 6px rgba(220, 53, 69, 0); 
+        } 
+        100% { 
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); 
+        } 
+    }
+    
+    .logo-bg { 
+        transition: transform 0.3s ease; 
+    }
+    
+    .navbar-brand:hover .logo-bg { 
+        transform: rotate(10deg); 
+    }
+    
+    .navbar:hover { 
+        box-shadow: 0 12px 40px rgba(0,0,0,0.4); 
+    }
+    
+    /* استایل برای موبایل */
+    @media (max-width: 991.98px) {
+        .navbar { 
+            min-height: 130px !important; 
+            padding: 20px 0; 
+        }
+        
+        .container.h-100 { 
+            height: auto !important; 
+        }
+        
+        .navbar-collapse { 
+            background: rgba(26,26,46,0.96); 
+            border-radius: 14px; 
+            margin-top: 20px; 
+            padding: 25px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.05); 
+        }
+        
+        .nav-link { 
+            padding: 14px 20px !important; 
+            border-radius: 10px; 
+            margin: 6px 0; 
+            height: auto !important;
+        }
+        
+        .nav-link:hover { 
+            background-color: rgba(255,255,255,0.08); 
+        }
+        
+        .h-100 { 
+            height: auto !important; 
+        }
+        
+        .navbar-nav.h-100 {
+            height: auto !important;
+        }
+        
+        .nav-item.h-100 {
+            height: auto !important;
+        }
+    }
+    
+    /* استایل برای دسکتاپ */
+    @media (min-width: 992px) {
+        .nav-link { 
+            border-radius: 8px; 
+        }
+        
+        .nav-link:hover { 
+            background-color: rgba(255,255,255,0.05); 
+        }
+        
+        .navbar-nav .nav-link {
+            height: 60px;
+        }
+    }
+</style>
+
+<!-- اسکریپت مدیریت Navbar -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // بستن منوی موبایل پس از کلیک روی لینک
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link:not(.dropdown-toggle)');
+    const navbarCollapse = document.getElementById('navbarNav');
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            // فقط در حالت موبایل (منو باز است)
+            if (window.innerWidth < 992 && navbarCollapse.classList.contains('show')) {
+                // استفاده از Bootstrap Collapse API
+                if (typeof bootstrap !== 'undefined') {
+                    const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                    bsCollapse.hide();
+                } 
+                // روش جایگزین
+                else if (navbarToggler) {
+                    navbarToggler.click();
+                }
+            }
+            
+            // اضافه کردن کلاس active به لینک کلیک‌شده
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    
+    // هایلایت لینک فعال بر اساس URL فعلی
+    function highlightActiveLink() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.navbar-nav .nav-link:not(.dropdown-toggle)');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && currentPath === href) {
+                link.classList.add('active');
+                const indicator = link.querySelector('.nav-indicator');
+                if (indicator) {
+                    indicator.style.transform = 'scaleX(1)';
+                }
+            }
+        });
+    }
+    
+    // اجرای تابع هنگام لود صفحه
+    highlightActiveLink();
+    
+    // همچنین هنگام تغییر در تاریخچه مرورگر (برای SPA-like behavior)
+    window.addEventListener('popstate', highlightActiveLink);
+});
+</script>

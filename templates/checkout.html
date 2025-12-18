@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load persian_tags %}  <!-- بارگذاری فیلترهای فارسی -->
+{% load humanize %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- استفاده از فیلترهای مختلف -->
+            
+            <!-- تاریخ شمسی ساده -->
+            <div class="info-box mb-3">
+                <span class="info-label">تاریخ سفارش:</span>
+                <span class="info-value">{{ order.created|persian_date }}</span>
+            </div>
+            
+            <!-- تاریخ و زمان شمسی -->
+            <div class="info-box mb-3">
+                <span class="info-label">تاریخ و زمان:</span>
+                <span class="info-value">{{ order.created|persian_datetime }}</span>
+            </div>
+            
+            <!-- با فرمت دلخواه -->
+            <div class="info-box mb-3">
+                <span class="info-label">تاریخ با فرمت:</span>
+                <span class="info-value">
+                    {{ order.created|persian_datetime:"%Y/%m/%d ساعت %H:%M" }}
+                </span>
+            </div>
+            
+            <!-- روز هفته -->
+            <div class="info-box mb-3">
+                <span class="info-label">روز سفارش:</span>
+                <span class="info-value">{{ order.created|persian_weekday }}</span>
+            </div>
+            
+            <!-- زمان گذشته -->
+            <div class="info-box mb-3">
+                <span class="info-label">زمان گذشته:</span>
+                <span class="info-value">{{ order.created|time_since_persian }}</span>
+            </div>
+            
+            <!-- قیمت فارسی -->
+            <div class="info-box mb-3">
+                <span class="info-label">مبلغ:</span>
+                <span class="info-value text-success">
+                    {{ order.get_total_price|persian_price }}
+                </span>
+            </div>
+            
+            <!-- اعداد فارسی -->
+            <div class="info-box mb-3">
+                <span class="info-label">تعداد محصولات:</span>
+                <span class="info-value">{{ order.items.count|persian_number }}</span>
+            </div>
+            
+            <!-- ترکیب با intcomma -->
+            <div class="info-box mb-3">
+                <span class="info-label">جمع کل:</span>
+                <span class="info-value">
+                    {{ order.get_total_price|persian_intcomma }} تومان
+                </span>
+            </div>
+            
+            <!-- تگ ساده برای تاریخ امروز -->
+            <div class="info-box mb-3">
+                <span class="info-label">امروز:</span>
+                <span class="info-value">
+                    {% current_persian_date %}
+                </span>
+            </div>
+            
+            <!-- تگ ساده برای تاریخ و زمان الان -->
+            <div class="info-box mb-3">
+                <span class="info-label">همین الان:</span>
+                <span class="info-value">
+                    {% current_persian_datetime %}
+                </span>
+            </div>
+            
+            <!-- برای متن‌های ترکیبی -->
+            <div class="info-box mb-3">
+                <span class="info-label">شناسه سفارش:</span>
+                <span class="info-value">
+                    سفارش شماره {{ order.id|persian_number }} 
+                    در تاریخ {{ order.created|persian_date }}
+                </span>
+            </div>
+            
+            <!-- فیلتر همه کاره -->
+            <div class="info-box mb-3">
+                <span class="info-label">با فیلتر جامع:</span>
+                <span class="info-value">
+                    {{ order.created|to_persian:"datetime" }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
