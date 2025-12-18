@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, OtpCode
+from .models import User, OtpCode,Profile
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -35,25 +35,16 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserRegistrationForm(forms.Form):
-	email = forms.EmailField()
-	full_name = forms.CharField(label='full name')
-	phone = forms.CharField(max_length=11)
-	password = forms.CharField(widget=forms.PasswordInput)
+    full_name = forms.CharField(label='نام کامل')
+    email = forms.EmailField(label='ایمیل')
+    phone = forms.CharField(label='شماره موبایل', max_length=11)
+    password = forms.CharField(label='رمز عبور', widget=forms.PasswordInput)
 
-	def clean_email(self):
-		email = self.cleaned_data['email']
-		user = User.objects.filter(email=email).exists()
-		if user:
-			raise ValidationError('This email already exists')
-		return email
+    city = forms.ChoiceField(choices=Profile.CITY_CHOICES, label='شهر')
+    address = forms.CharField(label='آدرس')
 
-	def clean_phone(self):
-		phone = self.cleaned_data['phone']
-		user = User.objects.filter(phone_number=phone).exists()
-		if user:
-			raise ValidationError('This phone number already exists')
-		OtpCode.objects.filter(phone_number=phone).delete()
-		return phone
+
+
 
 
 class VerifyCodeForm(forms.Form):
@@ -63,3 +54,18 @@ class VerifyCodeForm(forms.Form):
 class UserLoginForm(forms.Form):
 	phone = forms.CharField()
 	password = forms.CharField(widget=forms.PasswordInput)
+
+class ProfileForm(forms.ModelForm):
+	class Meta :
+		model = Profile
+		fields = ['city', 'address']
+		widgets = {
+			'city' : forms.Select(attrs = {'class' : 'form-select'}),
+			'address' : forms.Textarea(attrs = {
+				'class' : 'form-control',
+				'rows' : 3,
+				'placeholder' : 'آدرس کامل (خیابان، کوچه، پلاک، واحد)'
+			}),
+		}
+
+

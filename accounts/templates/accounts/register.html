@@ -1,9 +1,122 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}ثبت نام{% endblock %}
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Send">
-    </form>
+<div class="container min-vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 justify-content-center">
+        <div class="col-xl-4 col-lg-5 col-md-7 col-sm-10">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header text-center bg-primary text-white rounded-top-4 py-3">
+                    <h4 class="mb-0">ایجاد حساب کاربری</h4>
+                    <small class="opacity-75">لطفاً اطلاعات خود را وارد کنید</small>
+                </div>
+
+                <div class="card-body p-4">
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    <div class="mb-3">
+        {{ form.full_name.label_tag }}
+        {{ form.full_name }}
+        {% for error in form.full_name.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% for error in form.email.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.phone.label_tag }}
+        {{ form.phone }}
+        {% for error in form.phone.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        {% for error in form.password.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    {% if form.address %}
+    <div class="mb-3">
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {% for error in form.address.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if form.city %}
+    <div class="mb-3">
+        {{ form.city.label_tag }}
+        {{ form.city }}
+        {% for error in form.city.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn btn-success">ثبت نام</button>
+</form>
+                </div>
+
+                <div class="card-footer text-center bg-light rounded-bottom-4">
+                    <small>
+                        قبلاً ثبت‌نام کرده‌اید؟
+                        <a href="{% url 'accounts:user_login' %}" class="text-primary fw-bold">
+                            وارد شوید
+                        </a>
+                    </small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+        direction: rtl;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+    }
+
+    input, textarea {
+        text-align: right;
+    }
+
+    .card {
+        animation: fadeInUp 0.6s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 {% endblock %}
